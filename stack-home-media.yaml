@@ -16,7 +16,7 @@ services:
       - TZ=Europe/London
     volumes:
      - ./docker-volumes/home-media-transmission-config:/config
-     - ./media/nfs/torrents:/downloads
+     - /media/nfs/torrents:/downloads
     ports:
       - 9091:9091
       - 51413:51413
@@ -45,8 +45,8 @@ services:
       - TZ=Europe/London
     volumes:
       - ./docker-volumes/home-media-radarr-config:/config
-      - ./media/nfs/media/movies:/movies
-      - ./media/nfs/torrents:/downloads
+      - /media/nfs/media/movies:/movies
+      - /media/nfs/torrents:/downloads
     ports:
       - 7878:7878
 
@@ -61,8 +61,8 @@ services:
       - TZ=Europe/London
     volumes:
       - ./docker-volumes/home-media-sonarr-config:/config
-      - ./media/nfs/media/tv:/tv
-      - ./media/nfs/torrents:/downloads
+      - /media/nfs/media/tv:/tv
+      - /media/nfs/torrents:/downloads
     ports:
       - 8989:8989
 
@@ -78,8 +78,8 @@ services:
         - TZ=Europe/London     
       volumes:
         - ./docker-volumes/home-media-jellyfin-config:/config    
-        - ./media/nfs/media/movies:/movies      
-        - ./media/nfs/media/tv:/tv      
+        - /media/nfs/media/movies:/movies      
+        - /media/nfs/media/tv:/tv      
     
   notifiarr:
       container_name: home-media-notifiarr
