@@ -35,7 +35,7 @@ services:
     ports:
       - 9117:9117    
 
-   radarr:
+  radarr:
     container_name: home-media-radarr
     restart: unless-stopped
     image: ghcr.io/linuxserver/radarr
@@ -84,7 +84,7 @@ services:
   notifiarr:
       container_name: home-media-notifiarr
       restart: unless-stopped
-      image: golift:notifiarr
+      image: golift/notifiarr
       ports:
         - 5454:5454
       environment:
