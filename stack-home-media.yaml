@@ -1,0 +1,95 @@
+services:
+  watchtower:
+    container_name: home-media-watchtower
+    restart: unless-stopped
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  transmission:
+    container_name: home-media-transmission
+    restart: unless-stopped
+    image: ghcr.io/linuxserver/transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+     - ./docker-volumes/home-media-transmission-config:/config
+     - ./media/nfs/torrents:/downloads
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+  
+  jackett:
+    container_name: home-media-jackett
+    restart: unless-stopped
+    image: ghcr.io/linuxserver/jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media-jackett-config:/config
+    ports:
+      - 9117:9117    
+
+   radarr:
+    container_name: home-media-radarr
+    restart: unless-stopped
+    image: ghcr.io/linuxserver/radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media-radarr-config:/config
+      - ./media/nfs/media/movies:/movies
+      - ./media/nfs/torrents:/downloads
+    ports:
+      - 7878:7878
+
+
+  sonarr:
+    container_name: home-media-sonarr
+    restart: unless-stopped
+    image: ghcr.io/linuxserver/sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media-sonarr-config:/config
+      - ./media/nfs/media/tv:/tv
+      - ./media/nfs/torrents:/downloads
+    ports:
+      - 8989:8989
+
+  jellyfin:
+      container_name: home-media-jellyfin
+      restart: unless-stopped
+      image: ghcr.io/linuxserver/jellyfin
+      ports:
+        - 8096:8096
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/London     
+      volumes:
+        - ./docker-volumes/home-media-jellyfin-config:/config    
+        - ./media/nfs/media/movies:/movies      
+        - ./media/nfs/media/tv:/tv      
+    
+  notifiarr:
+      container_name: home-media-notifiarr
+      restart: unless-stopped
+      image: golift:notifiarr
+      ports:
+        - 5454:5454
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/London
+      volumes:
+        - ./docker-volumes/home-media-notifiarr-config:/config
