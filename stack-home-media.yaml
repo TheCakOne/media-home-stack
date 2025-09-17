@@ -3,6 +3,8 @@ services:
     container_name: home-media-watchtower
     restart: unless-stopped
     image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -16,24 +18,11 @@ services:
       - TZ=Europe/London
     volumes:
      - ./docker-volumes/home-media-transmission-config:/config
-     - /media/nfs/torrents:/downloads
+     - /nfs/media/torrents:/downloads
     ports:
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
-  
-  jackett:
-    container_name: home-media-jackett
-    restart: unless-stopped
-    image: ghcr.io/linuxserver/jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-    volumes:
-      - ./docker-volumes/home-media-jackett-config:/config
-    ports:
-      - 9117:9117    
 
   radarr:
     container_name: home-media-radarr
@@ -45,11 +34,10 @@ services:
       - TZ=Europe/London
     volumes:
       - ./docker-volumes/home-media-radarr-config:/config
-      - /media/nfs/media/movies:/movies
-      - /media/nfs/torrents:/downloads
+      - /nfs/media/media/movies:/movies
+      - /nfs/media/torrents:/downloads
     ports:
       - 7878:7878
-
 
   sonarr:
     container_name: home-media-sonarr
@@ -61,8 +49,8 @@ services:
       - TZ=Europe/London
     volumes:
       - ./docker-volumes/home-media-sonarr-config:/config
-      - /media/nfs/media/tv:/tv
-      - /media/nfs/torrents:/downloads
+      - /nfs/media/media/tv:/tv
+      - /nfs/media/torrents:/downloads
     ports:
       - 8989:8989
 
@@ -78,8 +66,8 @@ services:
         - TZ=Europe/London     
       volumes:
         - ./docker-volumes/home-media-jellyfin-config:/config    
-        - /media/nfs/media/movies:/movies      
-        - /media/nfs/media/tv:/tv      
+        - /nfs/media/media/movies:/movies      
+        - /nfs/media/media/tv:/tv      
     
   notifiarr:
       container_name: home-media-notifiarr
@@ -93,3 +81,33 @@ services:
         - TZ=Europe/London
       volumes:
         - ./docker-volumes/home-media-notifiarr-config:/config
+
+  nzbget:
+    container_name: home-media-nzbget
+    restart: unless-stopped
+    image: lscr.io/linuxserver/nzbget:latest
+    ports:
+      - 6789:6789
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media/nzbget-config:/config
+      - /nfs/media/torrents:/downloads
+
+  prowlarr:
+    restart: unless-stopped
+    container_name: home-media-prowlarr
+    image: linuxserver/prowlarr
+    ports:
+      - 9696:9696
+    environment:
+      - TZ=Europe/London
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./docker-volumes.home-media-prowlarr-config:/config
+
+   
+   
