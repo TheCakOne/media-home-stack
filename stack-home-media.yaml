@@ -109,5 +109,16 @@ services:
     volumes:
       - ./docker-volumes.home-media-prowlarr-config:/config
 
-   
+  jellyseerr:
+    container_name: home-media-jellyseerr
+    restart: unless-stopped
+    image: ghcr.io/fallenbagel/jellyseerr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media-jellyseerr-config:/config
+    ports:
+      - 5055:5055 
    
