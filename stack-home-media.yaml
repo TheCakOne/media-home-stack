@@ -65,7 +65,7 @@ services:
         - PGID=1000
         - TZ=Europe/London     
       volumes:
-        - ./docker-volumes/home-media-jellyfin-config:/config    
+        - /nfs/media/jellyfin_config:/config    
         - /nfs/media/media/movies:/movies      
         - /nfs/media/media/tv:/tv      
     
