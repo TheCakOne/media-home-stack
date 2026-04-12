@@ -68,6 +68,7 @@ services:
         - /nfs/media/jellyfin_config:/config    
         - /nfs/media/media/movies:/movies      
         - /nfs/media/media/tv:/tv      
+        - /nfs/media/media/books:/books
     
   notifiarr:
       container_name: home-media-notifiarr
@@ -121,4 +122,18 @@ services:
       - ./docker-volumes/home-media-jellyseerr-config:/config
     ports:
       - 5055:5055 
-   
+
+  lazylibrarian:
+    container_name: home-media-lazylibrarian
+    restart: unless-stopped
+    image: ghcr.io/linuxserver/lazylibrarian
+    ports:
+      - 5299:5299
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./docker-volumes/home-media-lazylibrarian-config:/config
+      - /nfs/media/media/books:/books
+      - /nfs/media/torrents:/downloads 
