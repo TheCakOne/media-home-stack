@@ -119,7 +119,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - ./docker-volumes/home-media-jellyseerr-config:/config
+      - ./docker-volumes/home-media-jellyseerr-config:/app/config
     ports:
       - 5055:5055 
 
