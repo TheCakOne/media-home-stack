@@ -2,7 +2,7 @@ services:
   watchtower:
     container_name: home-media-watchtower
     restart: unless-stopped
-    image: containrrr/watchtower
+    image: nickfedor/watchtower
     environment:
       - WATCHTOWER_CLEANUP=true
     volumes:
